@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button, Navbar, Nav, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useHistory } from 'react-router-dom';
 
 export const Header = () => {
+    const history = useHistory();
 
     return (
         <Navbar fixed="top" bg="primary" expand="lg">
-            <Navbar.Brand href="#home" className="text-light">React-Bootstrap</Navbar.Brand>
+            <Navbar.Brand onClick={() => history.push('/home')} className="text-light hover-cursor">React-Bootstrap</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">

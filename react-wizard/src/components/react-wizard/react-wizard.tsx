@@ -23,6 +23,10 @@ export const ReactWizard: FunctionComponent<IProps> = ({id = 0, stepComplete = f
   const history = useHistory();
 
   useEffect(() => {
+    setCurrentStepIndex(startingStep);
+  }, [startingStep]);
+
+  useEffect(() => {
     setStepCount(children.length);
   }, [children.length]);
 
@@ -48,12 +52,10 @@ export const ReactWizard: FunctionComponent<IProps> = ({id = 0, stepComplete = f
 
   const nextStep = () => {
     history.push('/wizard/' + (currentStepIndex + 1));
-    setCurrentStepIndex(currentStepIndex + 1);
   }
 
   const previousStep = () => {
     history.push('/wizard/' + (currentStepIndex - 1));
-    setCurrentStepIndex(currentStepIndex - 1);
   }
 
   const finalize = () => {

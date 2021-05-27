@@ -11,7 +11,7 @@ export const Home = () => {
     }
 
     return (
-        <Container className="margin-top-50">
+        <Container className="margin-top-66">
             <Row>
                 <Col className="flex-center">
                     <Card>
