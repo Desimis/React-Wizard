@@ -1,0 +1,20 @@
+.card {
+    width: 50%;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+}
+
+.margin-right-quarter {
+    margin-right: 25%;
+}
+
+.margin-left-quarter {
+    margin-left: 25%;
+}
+
+.margin-top-50 {
+    margin-top: 50px;
+}
