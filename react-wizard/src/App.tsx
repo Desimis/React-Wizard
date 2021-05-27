@@ -1,15 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Wizard } from './components/wizard/wizard';
 import { Home } from './components/home/home';
 import { Header } from './components/header/header';
-
-interface Step {
-  id: number;
-  stepComplete: boolean;
-}
 
 export const App = () => {
 

@@ -43,11 +43,15 @@ export const ReactWizard: FunctionComponent<IProps> = ({id = 0, stepComplete = f
   }, [children]);
 
   useEffect(() => {
-    let newStepDataArray = [...stepData];
-    if(newStepDataArray && newStepDataArray.length > 0) {
-      newStepDataArray[id].stepComplete = stepComplete;
-      setStepData(newStepDataArray);
+    const getStepData = (stepData: Step[]) => {
+      let newStepDataArray = [...stepData];
+      if(newStepDataArray && newStepDataArray.length > 0) {
+        newStepDataArray[id].stepComplete = stepComplete;
+      }
+
+      return newStepDataArray;
     }
+    setStepData(data => data = getStepData(data));
   }, [id, stepComplete]);
 
   const nextStep = () => {

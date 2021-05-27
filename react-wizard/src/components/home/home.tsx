@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useHistory, NavLink } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 export const Home = () => {
     const history = useHistory();

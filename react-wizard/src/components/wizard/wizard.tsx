@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ReactWizard } from '../react-wizard/react-wizard';
 import { Step1 } from '../step1/step1';
@@ -18,15 +18,15 @@ export const Wizard = () => {
   const { id } = useParams<ParamType>();
   const [stepComplete, setStepComplete] = useState<Step>({id: 0, stepComplete: false});
 
-  const memoizedCallback = useCallback((step: Step) => {
+  const callBack = (step: Step) => {
     setStepComplete(step);
-  }, []);
+  }
   
 
   return (
     <ReactWizard startingStep={Number(id)} id={stepComplete.id} stepComplete={stepComplete.stepComplete}>
-      <Step1 callBack={memoizedCallback} />
-      <Step2 callBack={memoizedCallback} />
+      <Step1 callBack={callBack} />
+      <Step2 callBack={callBack} />
     </ReactWizard>
   );
 }
