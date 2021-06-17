@@ -13,7 +13,7 @@ interface IProps {
   startingStep?: number;
 }
 
-interface Step {
+interface WizardStep {
   id: number;
   stepComplete: boolean;
 }
@@ -21,19 +21,18 @@ interface Step {
 export const ReactWizard: FunctionComponent<IProps> = ({id = 0, stepComplete = false, children, navigateTo = '/home', startingStep = 0}: any) => {
   const [stepCount, setStepCount] = useState<number>(0);
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(startingStep);
-  const [stepData, setStepData] = useState<Step[]>([]);
+  const [stepData, setStepData] = useState<WizardStep[]>([]);
   const [classes] = useState({
     enterRight: `${Animate.animated} ${Animate.fadeInRight}`,
     enterLeft: `${Animate.animated} ${Animate.fadeInLeft}`,
     exitRight: `${Animate.animated} ${Animate.fadeOutRight}`,
     exitLeft: `${Animate.animated} ${Animate.fadeOutLeft}`,
   });
-  const [transition, setTransition] = useState<string>('');
+  const [transition, setTransition] = useState<string[]>([]);
   const history = useHistory();
 
   useEffect(() => {
     setCurrentStepIndex(startingStep);
-    setTransition(classes.enterRight);
   }, [startingStep]);
 
   useEffect(() => {
@@ -53,7 +52,7 @@ export const ReactWizard: FunctionComponent<IProps> = ({id = 0, stepComplete = f
   }, [children]);
 
   useEffect(() => {
-    const getStepData = (stepData: Step[]) => {
+    const getStepData = (stepData: WizardStep[]) => {
       let newStepDataArray = [...stepData];
       if(newStepDataArray && newStepDataArray.length > 0) {
         newStepDataArray[id].stepComplete = stepComplete;
@@ -64,15 +63,31 @@ export const ReactWizard: FunctionComponent<IProps> = ({id = 0, stepComplete = f
     setStepData(data => data = getStepData(data));
   }, [id, stepComplete]);
 
-  const nextStep = () => {
-    setTransition(classes.exitLeft);
+  const navigateNextStep = () => {
+    const transitions = [...transition]
+    transitions[currentStepIndex] = classes.exitLeft;
+    transitions[currentStepIndex + 1] = classes.enterRight;
+    setTransition(transitions);
     history.push('/wizard/' + (currentStepIndex + 1));
+    
   }
 
-  const previousStep = () => {
-    setTransition(classes.exitRight);
+  const navigatePreviousStep = () => {
+    const transitions = [...transition]
+    transitions[currentStepIndex] = classes.exitRight;
+    transitions[currentStepIndex - 1] = classes.enterLeft;
+    setTransition(transitions);
     history.push('/wizard/' + (currentStepIndex - 1));
   }
+
+  useEffect(() => {
+    if(transition.length === 0) {
+      const transitions = [];
+      transitions[currentStepIndex] = classes.enterRight;
+      transitions[currentStepIndex + 1] = classes.enterRight;
+      setTransition(transitions);
+    }
+  }, [transition]);
 
   const finalize = () => {
     history.push(navigateTo);
@@ -86,7 +101,7 @@ export const ReactWizard: FunctionComponent<IProps> = ({id = 0, stepComplete = f
             <Container className="margin-top-50">
                 <Row>
                     <Col className="flex-center">
-                      <Step transitions={transition}>
+                      <Step transitions={transition[currentStepIndex]}>
                         {
                           children[currentStepIndex]
                         }
@@ -98,13 +113,13 @@ export const ReactWizard: FunctionComponent<IProps> = ({id = 0, stepComplete = f
                 <Nav.Item className="margin-left-quarter">
                 {
                     currentStepIndex > 0 &&
-                    <Button variant="primary" onClick={() => previousStep()}>Back</Button>
+                    <Button variant="primary" onClick={() => navigatePreviousStep()}>Back</Button>
                 }
                 </Nav.Item>
                 <Nav.Item className="margin-right-quarter">
                   {
                     currentStepIndex !== (stepCount - 1) &&
-                    <Button disabled={!(stepData && stepData[currentStepIndex] && stepData[currentStepIndex].stepComplete)} variant="primary" onClick={() => nextStep()}>Next</Button>
+                    <Button disabled={!(stepData && stepData[currentStepIndex] && stepData[currentStepIndex].stepComplete)} variant="primary" onClick={() => navigateNextStep()}>Next</Button>
                   }
                   {
                     currentStepIndex === (stepCount - 1) &&
